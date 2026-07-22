@@ -1,13 +1,15 @@
 export interface Scoreboard {
 
     steamId: string;
-    team:string;
     name:string;
+    team:string;
+    side:"CT"|"T";
 
     //basic stats
     kills:number;
     deaths:number;
     assists:number;
+    damage:number;
     mvps:number;
     score:number;
 
@@ -23,17 +25,3 @@ export interface Scoreboard {
 
 }
 
-export interface DamageTracker {
-
-    // 比赛累计伤害
-    totalDamage:number;
-
-
-    // 上一次收到的当前回合伤害
-    lastRoundDamage:number;
-
-
-    // 当前回合编号
-    round:number;
-
-}

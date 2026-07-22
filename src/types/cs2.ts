@@ -36,3 +36,9 @@ export interface Player {
 export interface PlayerData {
     [steamId: string]: Player;
 }
+
+export interface matchStats {
+    "phase": string;
+    "phase_ends_in": number;
+    "round": number;
+}

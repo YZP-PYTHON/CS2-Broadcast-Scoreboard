@@ -1,0 +1,12 @@
+{
+    "team" : {
+        "team1":{
+            "name": "Tedam A",
+            "init_side": "CT"
+        },
+        "team2":{
+            "name": "Team B",
+            "init_side": "T"
+        } 
+    }
+}
