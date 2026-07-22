@@ -55,22 +55,8 @@ export async function POST(
 
     updateMatchState(matchStats);
 
-    console.log("matchStats", getMatchState());
+    // console.log("matchStats", getMatchState());
 
-
-
-    
-    Object.entries(player_data).forEach(
-        ([steamId, player]) => {
-
-            console.log(
-                steamId,
-                player.name,
-                player.match_stats.kills
-            );
-
-        }
-    );
 
     initTeamMapping(
         config,
@@ -86,7 +72,7 @@ export async function POST(
     const teams =
         getTeams();
 
-    console.log("teams", teams);
+    // console.log("teams", teams);
 
     if (body.map?.round === 0) {
         resetMatchDamage();  // 新开比赛重置
@@ -101,7 +87,7 @@ export async function POST(
             player_data
         );
 
-        console.log("damage stats", stats);
+        // console.log("damage stats", stats);
 
     }
 
@@ -119,23 +105,10 @@ export async function POST(
 
     updateScoreboard(gbt);
 
-    console.log("scoreboard", getScoreboard());
+    // console.log("scoreboard", getScoreboard());
 
     
     
-    const dataDir = path.join(process.cwd(), "data");
-
-    await fs.mkdir(dataDir, {
-        recursive: true,
-    });
-
-    await fs.writeFile(
-        path.join(dataDir, `${Date.now()}.json`),
-        JSON.stringify(body, null, 4),
-        "utf8"
-    );
-
-    console.log("Saved latest GSI");
 
     return Response.json({
         ok: true
