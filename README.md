@@ -1,14 +1,3 @@
-<style>
-.hover-text {
-    color: black;
-    
-}
-
-.hover-text:hover {
-    color: white;
-}
-</style>
-
 # CS2-Broadcast-Scoreboard
 
 #### 一个基于 GSI 和 React 的 CS2 比赛直播记分板，允许用户通过修改配置文件和查询参数来自定义自己的记分板。
