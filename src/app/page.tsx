@@ -110,13 +110,21 @@ export default function Home() {
           }else{
             setShowScoreboard(true)
           }
-
-            
           // 
           console.log("live")
           setIsBlink(false)
           setPaused(false)
           setTimeColor("#ffffff")
+        }else if(data.phase === "freezetime" && time_ends <= 5){
+          if(autoEnable){
+            setShowScoreboard(false)
+          }else{
+            setShowScoreboard(true)
+          }
+          setPaused(false)
+          setIsBlink(false)
+          setTimeColor("#ffffff")
+
         }
         else{
           console.log("111")
