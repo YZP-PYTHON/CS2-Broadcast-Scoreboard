@@ -2,6 +2,191 @@
 
 @keyframes blink {
     50% {
+        visibility:hidden;
+    }
+
+}
+
+.blink {
+    animation: blink 1s infinite;
+}
+
+@keyframes bg-in {
+    from {
         opacity: 0;
     }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes bg-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+
+.scoreboard-show {
+    animation: bg-in .50s ease forwards;
+}
+
+
+.scoreboard-hide {
+    opacity: 1;
+    animation: bg-out .50s ease forwards;
+    animation-delay: 1.1s;
+}
+
+@keyframes text-in {
+
+    from {
+        opacity:0;
+        transform:translateY(-50px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+
+@keyframes text-out {
+
+    from {
+        opacity:1;
+        transform:translateY(0);
+    }
+
+    to {
+        opacity:0;
+        transform:translateY(-50px);
+    }
+
+}
+
+.timmer-text-show {
+    opacity: 0;
+    transform: translateY(-50px);
+
+    animation:
+        text-in .7s cubic-bezier(.16,1,.3,1)
+        forwards;
+
+    animation-delay: .50s;
+}
+
+
+.timmer-text-hide {
+    opacity: 1;
+    transform: translateY(0px);
+
+    animation:text-out .6s ease forwards;
+
+    animation-delay: .40s;
+}
+
+
+
+.score-text-show {
+    opacity: 0;
+    transform: translateY(-50px);
+
+    animation:
+        text-in .7s cubic-bezier(.16,1,.3,1)
+        forwards;
+
+    animation-delay: .60s;
+}
+
+
+.score-text-hide {
+    opacity: 1;
+    transform: translateY(0px);
+
+    animation:
+        text-out .6s ease forwards;
+
+    animation-delay: .20s;
+}
+
+@keyframes row-in {
+
+from {
+    opacity:0;
+    transform:translateY(-15px);
+}
+
+to {
+    opacity:1;
+    transform:translateY(0);
+}
+
+}
+
+
+@keyframes row-out {
+
+from {
+    opacity:1;
+    transform:translateY(0);
+}
+
+to {
+    opacity:0;
+    transform:translateY(-15px);
+}
+
+}
+
+
+.player-row-show {
+
+    opacity:0;
+    transform:translateY(-15px);
+
+    animation:
+        row-in .35s ease forwards;
+    animation-delay: 1s;
+
+}
+
+
+
+.player-row-hide {
+
+    animation:
+        row-out .35s ease forwards;
+
+}
+
+
+@keyframes table-out {
+
+    from {
+        opacity:1;
+        transform:translateY(0);
+    }
+
+    to {
+        opacity:0;
+        transform:translateY(-20px);
+    }
+
+}
+
+
+.table-hide {
+
+    animation:
+        table-out .4s ease forwards;
+
 }
