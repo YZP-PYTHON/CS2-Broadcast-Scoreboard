@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getMatchState,getTeamsState } from "@/lib/frontend/api";
+import { getMatchState,getTeamsState,getScoreboard } from "@/lib/frontend/api";
+import { Scoreboard } from "@/components/Scoreboard";
+
+import { useSearchParams } from "next/navigation";
 
 export function formatTime(seconds: number): string {
 
@@ -17,6 +20,7 @@ export function formatTime(seconds: number): string {
 
 
 export default function Home() {
+  const searchParams = useSearchParams();
   const [time, setTime] = useState("0:10");
   const [team1, setTeam1] = useState("TeamA")
   const [team2, setTeam2] = useState("TeamB")
@@ -41,22 +45,38 @@ export default function Home() {
     T : "#ffffff"
   })
   const [timeColor, setTimeColor] = useState("#ffffff")
-  
+
+  const [scoreboard,setScoreboard] = useState([null,null]);
+
+  const [isBlink, setIsBlink] = useState(false)
+
+  const autoEnableConfig = 
+    searchParams.get("autoEnable") ??
+    process.env.NEXT_PUBLIC_BASE_AUTO_ENABLE ??
+    "false";
+
+  const [autoEnable, setAutoEnable] = useState(
+      autoEnableConfig === "true"
+  );
+
+  const autoscoreboardItem = JSON.parse(
+    searchParams.get("scoreboardItem") ||
+    process.env.NEXT_PUBLIC_BASE_SCOREBOARD_ITEM ||
+    '[{"key":"kills","name":"击杀","fix":0},{"key":"deaths","name":"死亡","fix":0},{"key":"assists","name":"助攻","fix":0},{"key":"adr","name":"ADR","fix":1}]'
+  );
+
+  const [scoreboardItemConfig, setScoreboardItemConfig] = useState(
+      autoscoreboardItem
+  );
 
   useEffect(() => {
-    const timer = setInterval(async () => {
+    let running = true;
+
+    const update = async () => {
 
       try {
 
         const data = await getMatchState()
-
-        console.log(data)
-
-        const time_ends = await Number(data.phase_ends_in)
-
-        const time = formatTime(time_ends)
-
-        setTime(time)
 
         if (data === null){
           console.log("MatchState data is null")
@@ -64,28 +84,68 @@ export default function Home() {
           
         }
 
+        console.log("data",data)
+
+        const time_ends = await Number(data.phase_ends_in)
+
+        const time = formatTime(time_ends)
+
+        setTime(time)
+
         if (data.phase === "over"){
-          setTime("")
+          setTime("回合结束")
           setPaused(false)
+          setIsBlink(true)
           setShowScoreboard(true)
+          setTimeColor("#ffffff")
         }else if(data.phase === "paused"){
           setTime("PAUSED")
           setTimeColor("#ef4444")
           setPaused(true)
+          setIsBlink(true)
           setShowScoreboard(true)
-        }else if(data.phase === "live" || data.phase ==="bomb"){
-          setShowScoreboard(false)
+        }else if(data.phase === "live" || data.phase ==="bomb" || data.phase === "defuse"){
+          if(autoEnable){
+            setShowScoreboard(false)
+          }else{
+            setShowScoreboard(true)
+          }
+
+            
+          // 
+          console.log("live")
+          setIsBlink(false)
+          setPaused(false)
+          setTimeColor("#ffffff")
         }
         else{
+          console.log("111")
           setPaused(false)
+          setIsBlink(false)
           setTimeColor("#ffffff")
           setShowScoreboard(true)
         }
 
         const team = await getTeamsState()
 
-        if(team === null){
-          console.log("TeamState is null")
+        if (!team) {
+            console.log("TeamState is null");
+            return;
+        }
+        if (!team?.team1 || !team?.team2) {
+
+          console.log("TeamState is invalid");
+
+          return;
+
+        }
+
+        
+
+        const scoreboard = await getScoreboard()
+
+        if (scoreboard === null){
+          console.log("Scoreboard is null")
           return;
         }
 
@@ -96,6 +156,10 @@ export default function Home() {
           ]);
           setTeam1(team.team1.name);
           setTeam2(team.team2.name);
+          setScoreboard([
+            scoreboard[team.team1.name],
+            scoreboard[team.team2.name]
+          ])
           
 
         }else{
@@ -105,8 +169,14 @@ export default function Home() {
           ]);
           setTeam1(team.team2.name);
           setTeam2(team.team1.name);
+
+          setScoreboard([
+            scoreboard[team.team2.name],
+            scoreboard[team.team1.name]
+          ])
         }
 
+        console.log(scoreboard);
 
         // console.log(data);
 
@@ -115,11 +185,25 @@ export default function Home() {
         console.error("API error:", err);
 
       }
+      if (running) {
+            setTimeout(update, 500);
+      }
 
-    }, 500);
+    };
+
+    
+
+    update();
 
 
+    return () => {
+        running = false;
+    };
 
+  },[autoEnable])
+  
+
+  useEffect(() => {
     console.log(
       "score changed:",
       score
@@ -150,13 +234,10 @@ export default function Home() {
       });
 
     }
+    console.log(showScorebord);
 
-    return () => {
-      clearInterval(timer);
-    };
+  },[score,scoreColor,showScorebord]);
 
-  },[score,scoreColor]);
-  
   return (
     <div className="relative w-full h-full">
     {showScorebord &&(
@@ -167,7 +248,9 @@ export default function Home() {
 
       {/* 内容层 */}
       <div className={`relative z-10 flex-col items-center justify-center mt-[63px] h-screen `}>
-        <div style={{color:timeColor}} className="text-[123px] [text-shadow:0_2px_10px_rgba(0,0,0,0.8)] flex fixed top-[73px] left-1/2 -translate-x-1/2 leading-none">
+        <div style={{color:timeColor}} className={`text-[123px] [text-shadow:0_2px_10px_rgba(0,0,0,0.8)]
+         flex fixed top-[73px] left-1/2 -translate-x-1/2 leading-none 
+         ${isBlink ? "animate-[blink_1000ms_steps(1)_infinite]" : ""}`}>
           {time}
         </div>
         <div className="relative w-screen h-[390px]">
@@ -192,12 +275,12 @@ export default function Home() {
           </div>
 
         </div>
-        <div>
-          <div>
-            
+        <div >
+          <div className=" absolute left-[119px] top-[285px]">
+            <Scoreboard players = {scoreboard[0]} data = {scoreboardItemConfig} color={"from-blue-600 to-blue-400"} />
           </div>
-          <div>
-
+          <div className="absolute right-[120px] top-[285px]">
+            <Scoreboard players= {scoreboard[1]} data={scoreboardItemConfig} color={"bg-gradient-to-r from-red-600 to-red-400"}/>
           </div>
         </div>
       </div>

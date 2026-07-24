@@ -3,7 +3,7 @@
 const base_url = process.env.NEXT_PUBLIC_BASE_URL;
 export async function getMatchState() {
 
-    const response = await fetch(`${base_url}/gameState`);
+    const response = await fetch(`${base_url}/gameState`,{cache: "no-store"});
     
     const data = await response.json();
 
@@ -15,7 +15,7 @@ export async function getMatchState() {
 
 export async function getTeamsState() {
 
-    const response = await fetch(`${base_url}/teams`);
+const response = await fetch(`${base_url}/teams` ,{cache: "no-store"});
 
     const data = await response.json();
     
@@ -24,7 +24,7 @@ export async function getTeamsState() {
 }
 
 export async function getScoreboard() {
-    const response = await fetch(`${base_url}/scoreboard`);
+    const response = await fetch(`${base_url}/scoreboard`,{cache: "no-store"});
 
     const data = await response.json();
 
