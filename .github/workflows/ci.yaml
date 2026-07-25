@@ -235,43 +235,21 @@ jobs:
 
 
       - name: Create launcher
-
         shell: bash
-
         run: |
-
-
           if [[ "${{ matrix.platform }}" == "win-x64" ]]; then
 
-
-cat > release/start.bat <<EOF
-@echo off
-runtime\\node.exe server.js
-pause
-EOF
-
-
+            printf '@echo off\nruntime\\node.exe server.js\npause\n' \
+            > release/start.bat
 
           else
 
+            printf '#!/bin/bash\n\nDIR="$(cd "$(dirname "$0")" && pwd)"\n\n"$DIR/runtime/node" "$DIR/server.js"\n' \
+            > release/start.sh
 
-cat > release/start.sh <<EOF
-#!/bin/bash
-
-DIR="\$(cd "\$(dirname "\$0")" && pwd)"
-
-\$DIR/runtime/node \$DIR/server.js
-
-EOF
-
-
-chmod +x release/start.sh
-
+            chmod +x release/start.sh
 
           fi
-
-
-
 
       # =====================
       # 压缩
