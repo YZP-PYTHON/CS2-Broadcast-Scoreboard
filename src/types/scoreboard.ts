@@ -25,3 +25,19 @@ export interface Scoreboard {
 
 }
 
+export interface Config {
+    scoreColor: {
+        win: string;
+        lose: string;
+        draw: string;
+    };
+
+    autoEnable: boolean;
+
+    scoreboardItem: {
+        key: string;
+        name: string;
+        fix: number;
+    }[];
+}
+

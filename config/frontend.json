@@ -1,0 +1,30 @@
+{
+  "scoreColor": {
+    "win": "#ef4444",
+    "lose": "#3b82f6",
+    "draw": "#ffffff"
+  },
+  "autoEnable": true,
+  "scoreboardItem": [
+    {
+      "key": "kills",
+      "name": "击杀",
+      "fix": 0
+    },
+    {
+      "key": "deaths",
+      "name": "死亡",
+      "fix": 0
+    },
+    {
+      "key": "assists",
+      "name": "助攻",
+      "fix": 0
+    },
+    {
+      "key": "adr",
+      "name": "ADR",
+      "fix": 1
+    }
+  ]
+}

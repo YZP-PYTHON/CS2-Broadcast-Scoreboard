@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     "127.0.0.1",
     "localhost",
   ],
+  output: "standalone",
 };
 
 export default nextConfig;

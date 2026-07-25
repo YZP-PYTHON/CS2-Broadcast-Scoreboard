@@ -31,3 +31,12 @@ export async function getScoreboard() {
     return data;
 
 }
+
+export async function getConfig() {
+
+    const response = await fetch(`${base_url}/config`);
+
+    const data = await response.json();
+
+    return data;
+}

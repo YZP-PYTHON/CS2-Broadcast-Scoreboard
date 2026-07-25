@@ -6,11 +6,15 @@ import { Scoreboard } from "@/components/Scoreboard";
 
 import { useSearchParams } from "next/navigation";
 
+import type { Config } from "@/types/scoreboard";
+
+import { getConfig } from "@/lib/frontend/api";
+
 export function formatTime(seconds: number): string {
 
   const minutes = Math.floor(seconds / 60);
 
-  const remainingSeconds = parseInt(seconds % 60);
+  const remainingSeconds = Math.floor(seconds % 60);
 
 
   return `${minutes}:${remainingSeconds
@@ -27,52 +31,91 @@ export default function Home() {
   const [score, setScore] = useState([0,1])
   const [pauesed, setPaused] = useState(false)
   const [showScorebord, setShowScoreboard] = useState(false)
-  const [scoreColor,setScoreColor] = useState({
-    win:
-      process.env.NEXT_PUBLIC_SCORE_WIN 
-      ?? "#ef4444",
 
-    lose:
-      process.env.NEXT_PUBLIC_SCORE_LOSE
-      ?? "#3b82f6",
-
-    draw:
-      process.env.NEXT_PUBLIC_SCORE_DRAW
-      ?? "#ffffff"
-  });
   const [scoreColorNow ,setScoreColorNow] = useState({
     CT : "#ffffff",
     T : "#ffffff"
   })
+  
   const [timeColor, setTimeColor] = useState("#ffffff")
 
   const [scoreboard,setScoreboard] = useState([null,null]);
 
   const [isBlink, setIsBlink] = useState(false)
 
-  const autoEnableConfig = 
-    searchParams.get("autoEnable") ??
-    process.env.NEXT_PUBLIC_BASE_AUTO_ENABLE ??
-    "false";
+  const [config, setConfig] = useState<Config>({
+    "scoreColor": {
+      "win": "#ef4444",
+      "lose": "#3b82f6",
+      "draw": "#ffffff"
+    },
+    "autoEnable": true,
+    "scoreboardItem": [
+      {
+        "key": "kills",
+        "name": "击杀",
+        "fix": 0
+      },
+      {
+        "key": "deaths",
+        "name": "死亡",
+        "fix": 0
+      },
+      {
+        "key": "assists",
+        "name": "助攻",
+        "fix": 0
+      },
+      {
+        "key": "adr",
+        "name": "ADR",
+        "fix": 1
+      }
+    ]
+  });
 
-  const [autoEnable, setAutoEnable] = useState(
-      autoEnableConfig === "true"
-  );
+  const [loading, setLoading] = useState(true);
 
-  const autoscoreboardItem = JSON.parse(
-    searchParams.get("scoreboardItem") ||
-    process.env.NEXT_PUBLIC_BASE_SCOREBOARD_ITEM ||
-    '[{"key":"kills","name":"击杀","fix":0},{"key":"deaths","name":"死亡","fix":0},{"key":"assists","name":"助攻","fix":0},{"key":"adr","name":"ADR","fix":1}]'
-  );
-
-  const [scoreboardItemConfig, setScoreboardItemConfig] = useState(
-      autoscoreboardItem
-  );
+  const [scoreboardConfig,setScoreboardConfig] = useState([
+    {"key":"kills","name":"击杀","fix":0},
+    {"key":"deaths","name":"死亡","fix":0},
+    {"key":"assists","name":"助攻","fix":0},
+    {"key":"adr","name":"ADR","fix":1}])
 
   useEffect(() => {
+    async function init() {
+        const cfg = await getConfig();
+
+        console.log(cfg)
+
+        // URL 参数覆盖配置文件
+        if (searchParams.get("autoEnable") !== null) {
+            cfg.autoEnable = searchParams.get("autoEnable") === "true";
+        }
+
+        if (searchParams.get("scoreboardItem")) {
+            cfg.scoreboardItem = JSON.parse(
+                searchParams.get("scoreboardItem")!
+            );
+        }
+
+        setConfig(cfg);
+        setScoreboardConfig(cfg.scoreboardItem)
+        setLoading(false);
+    }
+
+    init();
+  }, [searchParams]);
+
+  useEffect(() => {
+
+    
+
     let running = true;
 
     const update = async () => {
+
+      
 
       try {
 
@@ -105,7 +148,7 @@ export default function Home() {
           setIsBlink(true)
           setShowScoreboard(true)
         }else if(data.phase === "live" || data.phase ==="bomb" || data.phase === "defuse"){
-          if(autoEnable){
+          if(config.autoEnable){
             setShowScoreboard(false)
           }else{
             setShowScoreboard(true)
@@ -116,7 +159,7 @@ export default function Home() {
           setPaused(false)
           setTimeColor("#ffffff")
         }else if(data.phase === "freezetime" && time_ends <= 5){
-          if(autoEnable){
+          if(config.autoEnable){
             setShowScoreboard(false)
           }else{
             setShowScoreboard(true)
@@ -208,7 +251,7 @@ export default function Home() {
         running = false;
     };
 
-  },[autoEnable])
+  },[config,loading])
   
 
   useEffect(() => {
@@ -219,32 +262,32 @@ export default function Home() {
 
     console.log(
       "color config:",
-      scoreColor
+      config.scoreColor
     );
 
 
     if(score[0] > score[1]){
         setScoreColorNow({
-          CT: scoreColor.win,
-          T: scoreColor.lose
+          CT: config.scoreColor.win,
+          T: config.scoreColor.lose
         });
 
     }else if(score[0] < score[1]){
       setScoreColorNow({
-        CT: scoreColor.lose,
-        T: scoreColor.win
+        CT: config.scoreColor.lose,
+        T: config.scoreColor.win
       });
 
     }else{
       setScoreColorNow({
-        CT: scoreColor.draw,
-        T: scoreColor.draw
+        CT: config.scoreColor.draw,
+        T: config.scoreColor.draw
       });
 
     }
     console.log(showScorebord);
 
-  },[score,scoreColor,showScorebord]);
+  },[score,config,showScorebord]);
 
   return (
     <div className="relative w-full h-full">
@@ -293,10 +336,10 @@ export default function Home() {
         </div>
         <div >
           <div className={` absolute left-[119px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
-            <Scoreboard players = {scoreboard[0]} data = {scoreboardItemConfig} color={"from-blue-600 to-blue-400"} animate={showScorebord} />
+            <Scoreboard players = {scoreboard[0]} data = {scoreboardConfig} color={"from-blue-600 to-blue-400"} animate={showScorebord} />
           </div>
           <div className={`absolute right-[120px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
-            <Scoreboard players= {scoreboard[1]} data={scoreboardItemConfig} color={"bg-gradient-to-r from-red-600 to-red-400"} animate={showScorebord}/>
+            <Scoreboard players= {scoreboard[1]} data={scoreboardConfig} color={"bg-gradient-to-r from-red-600 to-red-400"} animate={showScorebord}/>
           </div>
         </div>
       </div>
