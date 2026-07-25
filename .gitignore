@@ -41,4 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 data
-public/font/
+
+public/font/SourceHanSansSC-Normal.otf

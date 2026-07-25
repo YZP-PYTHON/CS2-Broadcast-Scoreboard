@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && shx mkdir -p .next/standalone/.next && shx cp -r public .next/standalone/public && shx cp -r config .next/standalone/config && shx cp -r .next/static .next/standalone/.next/static",
     "start": "next start",
     "lint": "eslint"
   },
@@ -25,8 +25,5 @@
     "shx": "^0.4.0",
     "tailwindcss": "^4",
     "typescript": "^5"
-  },
-  "scripts": {
-    "build": "next build && shx cp -r public .next/standalone/public && shx cp -r config .next/standalone && shx cp -r .next/static .next/standalone/.next/static"
   }
 }
