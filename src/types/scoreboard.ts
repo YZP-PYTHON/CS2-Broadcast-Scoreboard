@@ -26,6 +26,7 @@ export interface Scoreboard {
 }
 
 export interface Config {
+    font: string;
     scoreColor: {
         win: string;
         lose: string;

@@ -190,3 +190,11 @@ to {
         table-out .4s ease forwards;
 
 }
+
+:root {
+    --font-family: "Bahnschrift", "Segoe UI", sans-serif;
+}
+
+html {
+    font-family: var(--font-family);
+}
