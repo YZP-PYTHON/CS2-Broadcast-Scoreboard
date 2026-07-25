@@ -159,17 +159,25 @@ jobs:
       - name: Package
         shell: bash
         run: |
+
           VERSION=$(node -p "require('./version.json').version")
+
+
           if [[ "${{ matrix.platform }}" == "win-x64" ]]; then
-            zip \
-            -r \
-            CS2Scoreboard-v${VERSION}-${{ matrix.platform }}.zip \
-            release
+
+            powershell -Command "
+              Compress-Archive `
+              -Path release `
+              -DestinationPath CS2Scoreboard-v${VERSION}-win-x64.zip
+            "
+
           else
+
             tar \
             -czf \
             CS2Scoreboard-v${VERSION}-${{ matrix.platform }}.tar.gz \
             release
+
           fi
 
       # =====================
