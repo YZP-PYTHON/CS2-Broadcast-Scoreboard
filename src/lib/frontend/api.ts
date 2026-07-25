@@ -1,6 +1,6 @@
 "use client";
 
-const base_url = process.env.NEXT_PUBLIC_BASE_URL;
+const base_url = "http://127.0.0.1:3000/api";
 export async function getMatchState() {
 
     const response = await fetch(`${base_url}/gameState`,{cache: "no-store"});

@@ -76,7 +76,7 @@ export async function POST(
 
     if (body.map?.round === 0) {
         resetMatchDamage();  // 新开比赛重置
-        console.log("新对局，重置")
+        // console.log("新对局，重置")
     }
 
 

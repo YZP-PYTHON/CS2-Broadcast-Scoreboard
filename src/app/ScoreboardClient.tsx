@@ -88,7 +88,7 @@ export default function Home() {
     async function init() {
         const cfg = await getConfig();
 
-        console.log(cfg)
+        // console.log(cfg)
 
         // URL 参数覆盖配置文件
         if (searchParams.get("autoEnable") !== null) {
@@ -113,8 +113,8 @@ export default function Home() {
 
               await font.load();
 
-              console.log("font",font.status);
-              console.log("font",font);
+              // console.log("font",font.status);
+              // console.log("font",font);
 
               document.fonts.add(font);
 
@@ -153,7 +153,7 @@ export default function Home() {
           
         }
 
-        console.log("data",data)
+        // console.log("data",data)
 
         const time_ends = await Number(data.phase_ends_in)
 
@@ -179,8 +179,7 @@ export default function Home() {
           }else{
             setShowScoreboard(true)
           }
-          // 
-          console.log("live")
+          // console.log("live")
           setIsBlink(false)
           setPaused(false)
           setTimeColor("#ffffff")
@@ -196,7 +195,7 @@ export default function Home() {
 
         }
         else{
-          console.log("111")
+          // console.log("111")
           setPaused(false)
           setIsBlink(false)
           setTimeColor("#ffffff")
@@ -253,7 +252,7 @@ export default function Home() {
           ])
         }
 
-        console.log(scoreboard);
+        // console.log(scoreboard);
 
         // console.log(data);
 
@@ -281,16 +280,6 @@ export default function Home() {
   
 
   useEffect(() => {
-    console.log(
-      "score changed:",
-      score
-    );
-
-    console.log(
-      "color config:",
-      config.scoreColor
-    );
-
 
     if(score[0] > score[1]){
         setScoreColorNow({
@@ -311,7 +300,7 @@ export default function Home() {
       });
 
     }
-    console.log(showScorebord);
+    // console.log(showScorebord);
 
   },[score,config,showScorebord]);
 

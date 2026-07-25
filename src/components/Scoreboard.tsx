@@ -1,8 +1,5 @@
 export function Scoreboard({players,data,color,animate}){
 
-    console.log("scoreboard",data);
-    console.log("scoreboard",Array.isArray(data));
-    console.log("scoreboard",typeof data);
     return(
         <div className={`
             origin-top
@@ -59,7 +56,6 @@ export function Scoreboard({players,data,color,animate}){
                             {data?.slice(0,5).map((item)=>(
                                 <td className="px-5 py-6 text-center" key={item.key}>
                                     {player[item.key]?.toFixed(Number(item.fix))}
-                                    {console.log("scoreboard",item.fix)}
                                 </td>
                                 
                             ))}
