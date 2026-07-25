@@ -7,15 +7,12 @@ on:
 
   workflow_dispatch:
 
-
 permissions:
   contents: write
-
 
 env:
   NODE_VERSION: "22.17.0"
   PNPM_VERSION: "10"
-
 
 jobs:
 
@@ -24,215 +21,125 @@ jobs:
   # =========================
 
   version:
-
     runs-on: ubuntu-latest
-
     outputs:
       version: ${{ steps.version.outputs.version }}
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
-
 
       - name: Read version
         id: version
         run: |
-
           VERSION=$(node -p "require('./version.json').version")
-
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-
           echo "Version: $VERSION"
-
-
 
   # =========================
   # 多平台构建
   # =========================
 
   build:
-
     needs: version
 
-
     strategy:
-
       matrix:
-
         include:
-
           -
             os: ubuntu-latest
             platform: linux-x64
             node_file: node-v22.17.0-linux-x64.tar.xz
-
 
           -
             os: windows-latest
             platform: win-x64
             node_file: node-v22.17.0-win-x64.zip
 
-
           -
             os: macos-latest
             platform: macos-arm64
             node_file: node-v22.17.0-darwin-arm64.tar.gz
 
-
-
     runs-on: ${{ matrix.os }}
 
-
     steps:
-
 
       - name: Checkout
         uses: actions/checkout@v4
 
-
-
       # Node环境用于build
       - name: Setup Node
         uses: actions/setup-node@v4
-
         with:
-
           node-version: 22
-
           cache: pnpm
 
-
-
       - name: Setup pnpm
-
         uses: pnpm/action-setup@v4
-
         with:
-
-          version: ${{ env.PNPM_VERSION }}
-
-
+          version: 10
 
       - name: Install dependencies
-
         run:
-
           pnpm install --frozen-lockfile
 
-
-
       - name: Build
-
         run:
-
           pnpm build
-
-
 
       # =====================
       # 准备发布目录
       # =====================
 
       - name: Prepare release
-
         shell: bash
-
         run: |
-
-
           mkdir release
-
-
           cp -r .next/standalone/* release/
-
-
           cp -r public release/public || true
-
-
           cp -r config release/config || true
-
-
           cp version.json release/version.json
-
-
 
       # =====================
       # 下载Node Runtime
       # =====================
 
       - name: Download Node Runtime
-
         shell: bash
-
         run: |
-
-
           mkdir -p release/runtime
-
-
           curl \
           -L \
           https://nodejs.org/dist/v${NODE_VERSION}/${{ matrix.node_file }} \
           -o node-runtime
 
-
-
       # =====================
       # 解压Node
       # =====================
-
       - name: Extract Node Runtime
-
         shell: bash
-
         run: |
-
-
           if [[ "${{ matrix.platform }}" == "win-x64" ]]; then
-
-
             unzip node-runtime
-
-
             mv \
             node-v${NODE_VERSION}-win-x64/node.exe \
             release/runtime/node.exe
-
-
-
           elif [[ "${{ matrix.platform }}" == "linux-x64" ]]; then
-
-
             tar -xf node-runtime
-
-
             mv \
             node-v${NODE_VERSION}-linux-x64/bin/node \
             release/runtime/node
-
-
-
           elif [[ "${{ matrix.platform }}" == "macos-arm64" ]]; then
-
-
             tar -xf node-runtime
-
-
             mv \
             node-v${NODE_VERSION}-darwin-arm64/bin/node \
             release/runtime/node
-
-
           fi
-
-
 
       # =====================
       # 创建启动脚本
       # =====================
-
 
       - name: Create launcher
         shell: bash
@@ -254,62 +161,33 @@ jobs:
       # =====================
       # 压缩
       # =====================
-
-
       - name: Package
-
         shell: bash
-
         run: |
-
-
           VERSION=$(node -p "require('./version.json').version")
-
-
-
           if [[ "${{ matrix.platform }}" == "win-x64" ]]; then
-
-
             zip \
             -r \
             CS2Scoreboard-v${VERSION}-${{ matrix.platform }}.zip \
             release
-
-
-
           else
-
-
             tar \
             -czf \
             CS2Scoreboard-v${VERSION}-${{ matrix.platform }}.tar.gz \
             release
-
-
-
           fi
-
-
-
 
       # =====================
       # 上传artifact
       # =====================
 
-
       - name: Upload artifact
-
         uses: actions/upload-artifact@v4
-
         with:
-
-
           name:
             CS2Scoreboard-${{ matrix.platform }}
 
-
           path:
-
             |
               CS2Scoreboard-*
 
@@ -324,77 +202,41 @@ jobs:
 
   release:
 
-
     needs:
 
       - version
       - build
 
-
-
     runs-on:
 
       ubuntu-latest
 
-
-
     steps:
-
-
       - name: Checkout
-
         uses: actions/checkout@v4
 
-
-
       - name: Download artifacts
-
         uses: actions/download-artifact@v4
-
         with:
-
           path: artifacts
 
-
-
       - name: Create tag
-
-
         run: |
-
-
           VERSION=${{ needs.version.outputs.version }}
-
-
           git tag v${VERSION}
-
           git push origin v${VERSION}
-
-
-
-
 
       - name: Create GitHub Release
 
-
         uses: softprops/action-gh-release@v2
 
-
         with:
-
-
           tag_name:
-
             v${{ needs.version.outputs.version }}
 
-
           name:
-
             CS2Scoreboard v${{ needs.version.outputs.version }}
-
-
           files:
-
             |
               artifacts/**/*.zip
               artifacts/**/*.tar.gz
