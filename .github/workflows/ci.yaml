@@ -83,6 +83,8 @@ jobs:
         run:
           pnpm build
 
+      
+
       # =====================
       # 准备发布目录
       # =====================
@@ -91,7 +93,7 @@ jobs:
         shell: bash
         run: |
           mkdir release
-          cp -r .next/standalone/* release/
+          cp -r .next/standalone/. release/
           cp -r public release/public || true
           cp -r config release/config || true
           cp version.json release/version.json
@@ -163,7 +165,7 @@ jobs:
           VERSION=$(node -p "require('./version.json').version")
 
           if [[ "${{ matrix.platform }}" == "win-x64" ]]; then
-          
+
             powershell -Command "Compress-Archive -Path release -DestinationPath CS2Scoreboard-v${VERSION}-win-x64.zip"
 
           else
