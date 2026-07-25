@@ -163,7 +163,7 @@ jobs:
           VERSION=$(node -p "require('./version.json').version")
 
           if [[ "${{ matrix.platform }}" == "win-x64" ]]; then
-            tree release
+          
             powershell -Command "Compress-Archive -Path release -DestinationPath CS2Scoreboard-v${VERSION}-win-x64.zip"
 
           else
