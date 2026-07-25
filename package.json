@@ -21,7 +21,11 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "shx": "^0.4.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "scripts": {
+    "build": "next build && shx cp -r public .next/standalone/public && shx cp -r config .next/standalone && shx cp -r .next/static .next/standalone/.next/static"
   }
 }
