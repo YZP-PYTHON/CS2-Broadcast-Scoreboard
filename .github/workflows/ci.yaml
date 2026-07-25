@@ -162,14 +162,9 @@ jobs:
 
           VERSION=$(node -p "require('./version.json').version")
 
-
           if [[ "${{ matrix.platform }}" == "win-x64" ]]; then
 
-            powershell -Command "
-              Compress-Archive `
-              -Path release `
-              -DestinationPath CS2Scoreboard-v${VERSION}-win-x64.zip
-            "
+            powershell -Command "Compress-Archive -Path release -DestinationPath CS2Scoreboard-v${VERSION}-win-x64.zip"
 
           else
 
