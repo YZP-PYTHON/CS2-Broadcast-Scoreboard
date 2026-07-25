@@ -77,7 +77,7 @@ jobs:
 
       - name: Install dependencies
         run:
-          pnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile --shamefully-hoist
 
       - name: Build
         run:
