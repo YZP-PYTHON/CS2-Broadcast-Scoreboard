@@ -11,35 +11,21 @@ const configPath =
 
 export interface MatchConfig {
 
-    teams:{
-        [key:string]:{
-
-            name:string;
-
-            players:string[];
-
-        }
-    };
-
-
-    starting_side:{
-        [key:string]:
-        "CT"|"T";
+    team: {
+        team1: {
+            name: string;
+            init_side: "CT" | "T";
+        };
+        team2: {
+            name: string;
+            init_side: "CT" | "T";
+        };
     };
 
 }
 
 
 export async function getMatchConfig(): Promise<MatchConfig> {
-
-
-    const file = await
-        fs.readFile(
-            configPath,
-            "utf-8"
-        );
-
-
+    const file = await fs.readFile(configPath, "utf-8");
     return JSON.parse(file);
-
 }

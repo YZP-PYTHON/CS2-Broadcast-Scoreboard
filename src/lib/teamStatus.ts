@@ -1,10 +1,8 @@
-import fs from "fs";
-import path from "path";
-
-
 interface TeamState {
 
     name:string;
+
+    gsiName:string;
 
     side:"CT"|"T";
 
@@ -24,6 +22,40 @@ const teams = {
 
 
 let initialized = false;
+
+
+function syncTeamSides(
+    map:any
+){
+
+    if(!teams.team1 || !teams.team2)
+        return;
+
+
+    const ctName = map.team_ct.name;
+    const tName = map.team_t.name;
+
+
+    if(
+        ctName === teams.team1.gsiName &&
+        tName === teams.team2.gsiName
+    ){
+        teams.team1.side = "CT";
+        teams.team2.side = "T";
+        return;
+    }
+
+
+    if(
+        ctName === teams.team2.gsiName &&
+        tName === teams.team1.gsiName
+    ){
+        teams.team2.side = "CT";
+        teams.team1.side = "T";
+        return;
+    }
+
+}
 
 
 /**
@@ -47,64 +79,60 @@ export function initTeamMapping(
         map.team_t.name;
 
 
+    const team1Side =
+        config.team.team1.init_side === "CT"
+            ? "CT"
+            : "T";
 
-    if(config.team.team1.init_side === "CT"){
+    const team2Side =
+        config.team.team2.init_side === "CT"
+            ? "CT"
+            : "T";
 
-        teams.team1 = {
+    const team1GsiName =
+        team1Side === "CT"
+            ? ctName
+            : tName;
 
-            name:
-                config.team.team1.name,
+    const team2GsiName =
+        team2Side === "CT"
+            ? ctName
+            : tName;
 
-            side:"CT",
+    teams.team1 = {
 
-            score:
-                map.team_ct.score
+        name:
+            config.team.team1.name,
 
-        };
+        gsiName:
+            team1GsiName,
 
+        side: team1Side,
 
-        teams.team2 = {
+        score:
+            team1Side === "CT"
+                ? map.team_ct.score
+                : map.team_t.score
 
-            name:
-                config.team.team2.name,
-
-            side:"T",
-
-            score:
-                map.team_t.score
-
-        };
-
-    }
-    else {
-
-
-        teams.team1 = {
-
-            name:
-                config.team.team1.name,
-
-            side:"T",
-
-            score:
-                map.team_t.score
-
-        };
+    };
 
 
-        teams.team2 = {
+    teams.team2 = {
 
-            name:
-                config.team.team2.name,
+        name:
+            config.team.team2.name,
 
-            side:"CT",
+        gsiName:
+            team2GsiName,
 
-            score:
-                map.team_ct.score
+        side: team2Side,
 
-        };
+        score:
+            team2Side === "CT"
+                ? map.team_ct.score
+                : map.team_t.score
 
-    }
+    };
 
 
     initialized=true;
@@ -120,6 +148,8 @@ export function updateTeamScore(
     if(!initialized)
         return;
 
+
+    syncTeamSides(map);
 
 
     for(
