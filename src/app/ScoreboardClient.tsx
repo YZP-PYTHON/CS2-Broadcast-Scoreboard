@@ -173,7 +173,7 @@ export default function Home() {
           setPaused(true)
           setIsBlink(true)
           setShowScoreboard(true)
-        }else if(data.phase === "live" || data.phase ==="bomb" || data.phase === "defuse"){
+        }else if(data.phase === "live" || data.phase ==="bomb" || data.phase === "defuse" || data.phase === "warmup"){
           if(config.autoEnable){
             setShowScoreboard(false)
           }else{
@@ -252,7 +252,7 @@ export default function Home() {
           ])
         }
 
-        // console.log(scoreboard);
+      // console.log(scoreboard);
 
         // console.log(data);
 
