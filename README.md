@@ -2,6 +2,10 @@
 
 #### 一个基于 GSI 和 React 的 CS2 比赛直播记分板，允许用户通过修改配置文件和查询参数来自定义自己的记分板。
 
+# 效果预览
+
+
+---
 # 如何使用
 - ### 安装GSI配置
   - 在steam库中浏览CS2游戏文件，找到 `./game/csgo/cfg `
@@ -25,12 +29,12 @@
 
 # 配置部分
 
-- ### `config/match.json` 主要是后端配置，队伍的队名在这里设置
+- ### `config/match.json` 主要是后端配置，队伍的队名在这里设置 这一部分需在程序启动前配置好
 ```json
 {
     "team" : {
         "team1":{
-            "name": "Tedam A", // 队名
+            "name": "Team A", // 队名
             "init_side": "CT" // 比赛开始时的阵营
         },
         "team2":{
@@ -41,25 +45,50 @@
 }
 ```
 
-- ### `.env.local`前端部分，面板自定义部分在此
-```env
-NEXT_PUBLIC_SCORE_WIN= "#ef4444"  // 分数更高方比分颜色
-NEXT_PUBLIC_SCORE_LOSE= "#3b82f6" // 分数更低方比分颜色
-NEXT_PUBLIC_SCORE_DRAW= "#ffffff" // 平局时颜色（如果判断异常也是这个颜色）
-NEXT_PUBLIC_BASE_URL = "http://127.0.0.1:3000/api" // 后端URL 不要动
-NEXT_PUBLIC_BASE_AUTO_ENABLE = true // 计分板在一局结束，热身，开始前将自动启动，true为开启，false为关闭
-NEXT_PUBLIC_BASE_SCOREBOARD_ITEM = [{"key":"kills","name":"击杀","fix":0},{"key":"deaths","name":"死亡","fix":0},{"key":"assists","name":"助攻","fix":0},{"key":"adr","name":"ADR","fix":1}] // 玩家数据榜的配置 一定要保持在同一行，不要有换行
+- ### `/config/frontend.json`前端部分，面板自定义部分在此
+```json
+{
+    "font": "SourceHanSansSC-Normal.otf",  // 字体设置，需要将字体文件放到/public/font 
+    "scoreColor": {   // 比分颜色设置
+      "win": "#ef4444",  // 比分较高一方颜色
+      "lose": "#3b82f6", // 比分较低一方颜色
+      "draw": "#ffffff" // 平局颜色
+    },
+    "autoEnable": true,  // 计分板自动显示，如开启将会在一局结束，暂停，开始前显示计分板
+    "scoreboardItem": [  // 计分板玩家数据显示配置项，详情见下
+    {
+        "key": "kills",
+        "name": "击杀",
+        "fix": 0
+    },
+    {
+        "key": "deaths",
+        "name": "死亡",
+        "fix": 0
+    },
+    {
+        "key": "assists",
+        "name": "助攻",
+        "fix": 0
+    },
+    {
+        "key": "adr",
+        "name": "ADR",
+        "fix": 1
+    }
+  ]
+}
 ```
 ### 计分板自定义详细配置
 * #### `.env.local`中的`NEXT_PUBLIC_BASE_SCOREBOARD_ITEM`
 
 ```json
-[
-    {"key":"kills","name":"击杀","fix":0}, // key 为数据匹配名 name为显示名 fix 设置数字保留几位小数
-    {"key":"deaths","name":"死亡","fix":0},
-    {"key":"assists","name":"助攻","fix":0},
-    {"key":"adr","name":"ADR","fix":1}
-] //复制进入.env.local一定要变成一行，如果多行会读取错误
+{
+        "key": "kills", // 数据匹配名，详情见下方
+        "name": "击杀", // 数据显示名
+        "fix": 0 // 保留几位小数
+    },
+
 ```
 
 #### 玩家数据榜中`key`项配置
@@ -89,6 +118,6 @@ NEXT_PUBLIC_BASE_SCOREBOARD_ITEM = [{"key":"kills","name":"击杀","fix":0},{"ke
      作者太懒了，浏览器parms没有多少配置，如有其他需要请提issue
    </details>
 
-  - `autoEnable` 同 `NEXT_PUBLIC_BASE_AUTO_ENABLE` 计分板在一局结束，热身，开始前将自动启动，true为开启，false为关闭
+  - `autoEnable` 计分板在一局结束，热身，开始前将自动启动，true为开启，false为关闭
 
-  - `scoreboardItem` 同 `NEXT_PUBLIC_BASE_SCOREBOARD_ITEM` [详细配置](#计分板自定义详细配置)
+  - `scoreboardItem` [详细配置](#计分板自定义详细配置)
