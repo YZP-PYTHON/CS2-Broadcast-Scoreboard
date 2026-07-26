@@ -7,6 +7,10 @@
   - 在steam库中浏览CS2游戏文件，找到 `./game/csgo/cfg `
   - 将仓库中的 `gamestate_integration_scorebord.cfg` 移动到该文件夹
 
+- ### 下载程序
+  - 从[release](https://github.com/YZP-PYTHON/CS2-Broadcast-Scoreboard/releases/latest)中下载最新版程序
+  - 下载完成后解压，进入release文件夹中，双击start.bat文件(windows)或在命令行中输入bash start.sh(Linux)
+
 - ### 设置OBS浏览器采集
   - 在OBS添加一个浏览器源
   - 设置url为 `http://127.0.0.1:3000`
