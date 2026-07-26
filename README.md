@@ -131,3 +131,24 @@
   - `autoEnable` 计分板在一局结束，热身，开始前将自动启动，true为开启，false为关闭
 
   - `scoreboardItem` [详细配置](#计分板自定义详细配置)
+
+---
+
+## 免责声明
+
+本仓库不包含或再分发任何字体文件。
+
+字体文件（包括 `.ttf`、`.otf`、`.woff`、`.woff2` 等格式）均被有意排除在本仓库之外。
+
+本项目中涉及的字体仅作为展示效果或运行环境依赖存在，相关字体文件的版权归各自版权所有者所有。本仓库仅提供代码及相关功能，用户需自行从官方或合法渠道获取字体，并遵守字体对应的许可证协议。
+
+因用户未遵守字体授权协议而产生的任何版权或法律问题，与本项目作者无关。
+
+
+This repository does not include or redistribute any font files. 
+
+Font files (*.ttf, *.otf, *.woff, etc.) are intentionally excluded from this repository.
+
+Any fonts referenced or displayed by this project are not part of this repository and remain the property of their respective copyright owners. This project only provides code and functionality, and users are solely responsible for acquiring fonts from official sources and complying with their respective licenses.
+
+The project authors are not responsible for any font licensing issues caused by unauthorized acquisition or usage by users.
