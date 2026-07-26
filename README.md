@@ -4,6 +4,16 @@
 
 # 效果预览
 
+### 界面
+<img width="1920" height="1080" alt="Screenshot 2026-07-26 12-59-41" src="https://github.com/user-attachments/assets/189c7c2d-2bdc-4a26-b88a-f68f2fa3516d" />
+
+### 开启动画
+
+<img width="640" height="360" alt="2026-07-26 12-59-432 00_00_00-00_00_30" src="https://github.com/user-attachments/assets/08eb7133-f5f0-462d-8e9b-64d2b232193a" />
+
+### 结束动画
+
+<img width="640" height="360" alt="2026-07-26 12-59-43_00000000 00_00_00-00_00_30" src="https://github.com/user-attachments/assets/41650d65-9c9d-4775-ba88-a3d091988d5a" />
 
 ---
 # 如何使用
