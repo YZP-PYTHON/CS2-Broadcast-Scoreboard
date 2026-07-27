@@ -2,7 +2,7 @@
 
 #### 一个基于 GSI 和 React 的 CS2 比赛直播记分板，允许用户通过修改配置文件和查询参数来自定义自己的记分板。
 
-## <u>Englisn</u>  [简体中文](readme_cn.md)  
+## [English](README.md)  <u>简体中文</u>
 
 # 效果预览
 
@@ -153,4 +153,4 @@ Font files (*.ttf, *.otf, *.woff, etc.) are intentionally excluded from this rep
 
 Any fonts referenced or displayed by this project are not part of this repository and remain the property of their respective copyright owners. This project only provides code and functionality, and users are solely responsible for acquiring fonts from official sources and complying with their respective licenses.
 
-The project authors are not responsible for any font licensing issues caused by unauthorized acquisition or usage by users.
+The project authors are not responsible for any font licensing issues caused by unauthorized acquisition or usage by users.s
