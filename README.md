@@ -2,7 +2,7 @@
 
 #### A broadcast scoreboard for CS2 built with GSI and React. Users can customize the scoreboard by modifying configuration files and query parameters.
 
-## <u>Englisn</u>  [简体中文](readme_cn.md)  
+## English | [简体中文](readme_cn.md)  
 
 # Project Preview
 
@@ -23,11 +23,11 @@
   - Browse the CS2 game files in your Steam library.
 
     Turnd To `./game/csgo/cfg `
-  - Copy repository file `gamestate_integration_scorebord.cfg` To `./game/csgo/cfg `
+  - Copy the repository file `gamestate_integration_scoreboard.cfg` to `./game/csgo/cfg`.
 
 - ### Download Program
-  - Download Files From [release](https://github.com/YZP-PYTHON/CS2-Broadcast-Scoreboard/releases/latest)
-  - After you download the program，Go to /release，click `start.bat` (windows)or in bash `bash start.sh`(Linux)
+  - Download the files from the [release](https://github.com/YZP-PYTHON/CS2-Broadcast-Scoreboard/releases/latest)
+  - After you download the program,Go to /release，click `start.bat` (windows) or in bash `bash start.sh` (Linux)
 
 - ### Configure the OBS Browser Source
   - Add a **Browser Source** to your OBS scene.
@@ -64,7 +64,7 @@
     This file contains the frontend configuration, including panel customization options.
 ```json
 {
-    "font": "SourceHanSansSC-Normal.otf",  // Font Stetting,Font Files must place in ./public/font Folder
+    "font": "SourceHanSansSC-Normal.otf",  // Font setting. Font files must be placed in the ./public/font folder
     "scoreColor": {   // Score Color Settings
       "win": "#ef4444",  // Color of upper side
       "lose": "#3b82f6", // Color of lower side
