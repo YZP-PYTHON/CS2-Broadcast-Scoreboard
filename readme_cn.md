@@ -92,7 +92,7 @@
 }
 ```
 ### 计分板自定义详细配置
-* #### `.env.local`中的`NEXT_PUBLIC_BASE_SCOREBOARD_ITEM`
+* #### `/config/frontend.json`中的`scoreboardItem`
 
 ```json
 {
