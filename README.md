@@ -122,7 +122,7 @@
 | kd | 2 | Kill/Death Ratio (K/D) | Kills ÷ deaths. A higher value indicates better fragging efficiency. |
 | kpr | 1.5 | Kills Per Round (KPR) | Kills ÷ number of rounds. |
 | dpr | 0.75 | Deaths Per Round (DPR) | Deaths ÷ number of rounds. |
-| kast | 0 | KAST Rating | The percentage of rounds where the player achieved a Kill, Assist, Survived, or was Traded. |
+| kast | 0 | KAST Rating | Comming s∞n The percentage of rounds where the player achieved a Kill, Assist, Survived, or was Traded. |
 | score | 15 | Score | The Score value displayed on the CS2 scoreboard. |
 | mvps | 2 | MVP Count | The number of rounds in which the player earned MVP. |
 

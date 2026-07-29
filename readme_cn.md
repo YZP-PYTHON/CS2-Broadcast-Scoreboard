@@ -118,7 +118,7 @@
 | kd | 2 | 击杀死亡比（Kill/Death Ratio） | 击杀数 ÷ 死亡数，越高代表换人效率越高 |
 | kpr | 1.5 | 每回合击杀（Kills Per Round） | 击杀数 ÷ 回合数 |
 | dpr | 0.75 | 每回合死亡（Deaths Per Round） | 死亡数 ÷ 回合数 |
-| kast | 0 | KAST评分 | 回合中完成击杀、助攻、生存或被交易击杀的比例 |
+| kast | 0 | KAST评分 | 未实现，定值为0，回合中完成击杀、助攻、生存或被交易击杀的比例 |
 | score | 15 | 游戏积分 | CS2计分板中的 Score 数值 |
 | mvps | 2 | MVP次数 | 获得回合 MVP 的次数 |  
 
