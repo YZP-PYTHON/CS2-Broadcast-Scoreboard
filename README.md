@@ -1,71 +1,77 @@
 # CS2-Broadcast-Scoreboard
 
-#### 一个基于 GSI 和 React 的 CS2 比赛直播记分板，允许用户通过修改配置文件和查询参数来自定义自己的记分板。
+#### A broadcast scoreboard for CS2 built with GSI and React. Users can customize the scoreboard by modifying configuration files and query parameters.
 
-# 效果预览
+## English | [简体中文](readme_cn.md)  
 
-### 界面
+# Project Preview
+
+### Interface
 <img width="1920" height="1080" alt="Screenshot 2026-07-26 12-59-41" src="https://github.com/user-attachments/assets/189c7c2d-2bdc-4a26-b88a-f68f2fa3516d" />
 
-### 开启动画
+### Enable Animation
 
 <img width="640" height="360" alt="2026-07-26 12-59-432 00_00_00-00_00_30" src="https://github.com/user-attachments/assets/08eb7133-f5f0-462d-8e9b-64d2b232193a" />
 
-### 结束动画
+### Closed Animation
 
 <img width="640" height="360" alt="2026-07-26 12-59-43_00000000 00_00_00-00_00_30" src="https://github.com/user-attachments/assets/41650d65-9c9d-4775-ba88-a3d091988d5a" />
 
 ---
-# 如何使用
-- ### 安装GSI配置
-  - 在steam库中浏览CS2游戏文件，找到 `./game/csgo/cfg `
-  - 将仓库中的 `gamestate_integration_scorebord.cfg` 移动到该文件夹
+# Usage
+- ### Install GSI Config
+  - Browse the CS2 game files in your Steam library.
 
-- ### 下载程序
-  - 从[release](https://github.com/YZP-PYTHON/CS2-Broadcast-Scoreboard/releases/latest)中下载最新版程序
-  - 下载完成后解压，进入release文件夹中，双击start.bat文件(windows)或在命令行中输入bash start.sh(Linux)
+    Turnd To `./game/csgo/cfg `
+  - Copy the repository file `gamestate_integration_scoreboard.cfg` to `./game/csgo/cfg`.
 
-- ### 设置OBS浏览器采集
-  - 在OBS添加一个浏览器源
-  - 设置url为 `http://127.0.0.1:3000`
-  - 设置宽度和高度分别为1920和1080
-  - 留空自定义CSS部分
-  - 将整个源放置在你的游戏画面之上
+- ### Download Program
+  - Download the files from the [release](https://github.com/YZP-PYTHON/CS2-Broadcast-Scoreboard/releases/latest)
+  - After you download the program,Go to /release，click `start.bat` (windows) or in bash `bash start.sh` (Linux)
 
-  - _Vmix 软件设置同理_
+- ### Configure the OBS Browser Source
+  - Add a **Browser Source** to your OBS scene.
+  - Set the URL to `http://127.0.0.1:3000`.
+  - Set the width to **1920** and the height to **1080**.
+  - Leave the **Custom CSS** field blank.
+  - Place the browser source above your game capture in the scene.
+
+  - _The configuration is similar when using vMix._
 
 
 ---
 
-# 配置部分
+# Configuration
 
-- ### `config/match.json` 主要是后端配置，队伍的队名在这里设置 这一部分需在程序启动前配置好
+- ### `config/match.json`
+  This file contains the primary backend configuration. Configure the team names here before launching the application.
 ```json
 {
     "team" : {
         "team1":{
-            "name": "Team A", // 队名
-            "init_side": "CT" // 比赛开始时的阵营
+            "name": "Team A", // Team Name
+            "init_side": "CT" // Side when the games starts
         },
         "team2":{
-            "name": "Team B", // 队名
-            "init_side": "T" // 比赛开始时的阵营
+            "name": "Team B", // Team Name
+            "init_side": "T" // Side when the games starts
         } 
     }
 }
 ```
 
-- ### `/config/frontend.json`前端部分，面板自定义部分在此
+- ### `/config/frontend.json`
+    This file contains the frontend configuration, including panel customization options.
 ```json
 {
-    "font": "SourceHanSansSC-Normal.otf",  // 字体设置，需要将字体文件放到/public/font 
-    "scoreColor": {   // 比分颜色设置
-      "win": "#ef4444",  // 比分较高一方颜色
-      "lose": "#3b82f6", // 比分较低一方颜色
-      "draw": "#ffffff" // 平局颜色
+    "font": "SourceHanSansSC-Normal.otf",  // Font setting. Font files must be placed in the ./public/font folder
+    "scoreColor": {   // Score Color Settings
+      "win": "#ef4444",  // Color of upper side
+      "lose": "#3b82f6", // Color of lower side
+      "draw": "#ffffff" // Color of draw
     },
-    "autoEnable": true,  // 计分板自动显示，如开启将会在一局结束，暂停，开始前显示计分板
-    "scoreboardItem": [  // 计分板玩家数据显示配置项，详情见下
+    "autoEnable": true,  // Automatically display the scoreboard. When enabled, the scoreboard will be shown at the end of each round, during pauses, and before each round begins.
+    "scoreboardItem": [  // Player data display settings for the scoreboard. See below for details.
     {
         "key": "kills",
         "name": "击杀",
@@ -89,52 +95,59 @@
   ]
 }
 ```
-### 计分板自定义详细配置
-* #### `.env.local`中的`NEXT_PUBLIC_BASE_SCOREBOARD_ITEM`
+### Detailed Scoreboard Configuration
+* #### `scoreboardItem` in  `/config/frontend.json`
 
 ```json
 {
-        "key": "kills", // 数据匹配名，详情见下方
-        "name": "击杀", // 数据显示名
-        "fix": 0 // 保留几位小数
+        "key": "kills", // Data mapping name. See below for   details.
+        "name": "击杀", // Display Name
+        "fix": 0 // Decimal Places
     },
 
 ```
 
-#### 玩家数据榜中`key`项配置
-| 字段 | 示例值 | 含义 | 说明 |
+#### Player Data Leaderboard `key` Configuration
+| Field | Example Value | Meaning | Description |
 |---|---|---|---|
-| name | aaa| 玩家名称 | 玩家在游戏中的昵称 常驻显示，不建议配置|
-| steamId | 7xxxxxxxxxxxxx | Steam ID | 玩家唯一 Steam64 ID 太长了，不建议配置|
-| team | Team A | 队伍名称 | 玩家所属队伍 会自动分组展示，不建议配置|
-| side | CT | 当前阵营 | 当前半场所在阵营（CT 或 T）会自动分组展示，不建议配置 |
-| kills | 6 | 击杀数 | 玩家本场比赛累计击杀次数 |
-| deaths | 3 | 死亡数 | 玩家本场比赛累计死亡次数 |
-| assists | 1 | 助攻数 | 玩家本场比赛累计助攻次数 |
-| damage | 415 | 总伤害 | 玩家造成的累计伤害总量 |
-| adr | 103.75 | 平均每回合伤害（Average Damage per Round） | 总伤害 ÷ 回合数，衡量持续输出能力 |
-| kd | 2 | 击杀死亡比（Kill/Death Ratio） | 击杀数 ÷ 死亡数，越高代表换人效率越高 |
-| kpr | 1.5 | 每回合击杀（Kills Per Round） | 击杀数 ÷ 回合数 |
-| dpr | 0.75 | 每回合死亡（Deaths Per Round） | 死亡数 ÷ 回合数 |
-| kast | 0 | KAST评分 | 回合中完成击杀、助攻、生存或被交易击杀的比例 |
-| score | 15 | 游戏积分 | CS2计分板中的 Score 数值 |
-| mvps | 2 | MVP次数 | 获得回合 MVP 的次数 |  
+| name | aaa | Player Name | The player's in-game nickname. Displayed by default. Configuration is not recommended. |
+| steamId | 7xxxxxxxxxxxxx | Steam ID | The player's unique Steam64 ID. Too long to configure manually, not recommended. |
+| team | Team A | Team Name | The team the player belongs to. Players are automatically grouped by team. Configuration is not recommended. |
+| side | CT | Current Side | The player's current side in the half (CT or T). Automatically grouped and displayed. Configuration is not recommended. |
+| kills | 6 | Kills | The total number of kills achieved by the player in the current match. |
+| deaths | 3 | Deaths | The total number of deaths suffered by the player in the current match. |
+| assists | 1 | Assists | The total number of assists made by the player in the current match. |
+| damage | 415 | Total Damage | The total damage dealt by the player in the current match. |
+| adr | 103.75 | Average Damage per Round (ADR) | Total damage ÷ number of rounds. Measures the player's consistent damage output. |
+| kd | 2 | Kill/Death Ratio (K/D) | Kills ÷ deaths. A higher value indicates better fragging efficiency. |
+| kpr | 1.5 | Kills Per Round (KPR) | Kills ÷ number of rounds. |
+| dpr | 0.75 | Deaths Per Round (DPR) | Deaths ÷ number of rounds. |
+| kast | 0 | KAST Rating | Comming s∞n The percentage of rounds where the player achieved a Kill, Assist, Survived, or was Traded. |
+| score | 15 | Score | The Score value displayed on the CS2 scoreboard. |
+| mvps | 2 | MVP Count | The number of rounds in which the player earned MVP. |
 
 
-- ### 浏览器parms部分配置
+- ### Query Parameters
 
    <details>
-   <summary>点一下</summary>
-     作者太懒了，浏览器parms没有多少配置，如有其他需要请提issue
-   </details>
+   <summary>🤔</summary>
+    The author was too lazy to add more browser parameters. If you need any additional options, feel free to open an issue.
+  </details>
 
-  - `autoEnable` 计分板在一局结束，热身，开始前将自动启动，true为开启，false为关闭
+  - `autoEnable` Automatically display the scoreboard. When enabled, the scoreboard will be shown at the end of each round, during pauses, and before each round begins.
 
-  - `scoreboardItem` [详细配置](#计分板自定义详细配置)
+  - `scoreboardItem` [Details](#Detailed Scoreboard Configuration)
 
 ---
 
-## 免责声明
+## Legal Disclaimer
+This repository does not include or redistribute any font files. 
+
+Font files (*.ttf, *.otf, *.woff, etc.) are intentionally excluded from this repository.
+
+Any fonts referenced or displayed by this project are not part of this repository and remain the property of their respective copyright owners. This project only provides code and functionality, and users are solely responsible for acquiring fonts from official sources and complying with their respective licenses.
+
+The project authors are not responsible for any font licensing issues caused by unauthorized acquisition or usage by users.
 
 本仓库不包含或再分发任何字体文件。
 
@@ -143,12 +156,3 @@
 本项目中涉及的字体仅作为展示效果或运行环境依赖存在，相关字体文件的版权归各自版权所有者所有。本仓库仅提供代码及相关功能，用户需自行从官方或合法渠道获取字体，并遵守字体对应的许可证协议。
 
 因用户未遵守字体授权协议而产生的任何版权或法律问题，与本项目作者无关。
-
-
-This repository does not include or redistribute any font files. 
-
-Font files (*.ttf, *.otf, *.woff, etc.) are intentionally excluded from this repository.
-
-Any fonts referenced or displayed by this project are not part of this repository and remain the property of their respective copyright owners. This project only provides code and functionality, and users are solely responsible for acquiring fonts from official sources and complying with their respective licenses.
-
-The project authors are not responsible for any font licensing issues caused by unauthorized acquisition or usage by users.
