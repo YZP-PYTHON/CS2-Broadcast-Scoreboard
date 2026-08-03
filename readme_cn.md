@@ -67,6 +67,10 @@
       "draw": "#ffffff" // 平局颜色
     },
     "autoEnable": true,  // 计分板自动显示，如开启将会在一局结束，暂停，开始前显示计分板
+    "showGameState": true, // 控制计时部分显示状态
+    "showTeamScore": true, // 控制比分部分显示状态
+    "showDataSheet": true, // 控制玩家数据列表显示状态
+    "showBackground": true, // 控制黑色背景模糊显示状态
     "scoreboardItem": [  // 计分板玩家数据显示配置项，详情见下
     {
         "key": "kills",
@@ -133,6 +137,18 @@
   - `autoEnable` 计分板在一局结束，热身，开始前将自动启动，true为开启，false为关闭
 
   - `scoreboardItem` [详细配置](#计分板自定义详细配置)
+
+  - `showGameState` 控制计时部分显示状态
+
+  - `showTeamScore` 控制比分部分显示状态
+
+  - `showDataSheet` 控制玩家数据列表显示状态
+  
+  - `showBackground` 控制黑色背景模糊显示状态
+
+
+  - 示例：
+    - `http://127.0.0.1:3000/?autoEnable=true&showGameState=true&showDataSheet=true&showTeamScore=true&showBackground=true`
 
 ---
 

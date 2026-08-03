@@ -106,6 +106,19 @@ export default function Home() {
             );
         }
 
+        if (searchParams.get("showGameState") !== null) {
+            cfg.showGameState = searchParams.get("showGameState") === "true";
+        }
+        if (searchParams.get("showTeamScore") !== null) {
+            cfg.showTeamScore = searchParams.get("showTeamScore") === "true";
+        }
+        if (searchParams.get("showDataSheet") !== null) {
+            cfg.showDataSheet = searchParams.get("showDataSheet") === "true";
+        }
+        if (searchParams.get("showBackground") !== null) {
+            cfg.showBackground = searchParams.get("showBackground") === "true";
+        }
+
         setConfig(cfg);
         setScoreboardConfig(cfg.scoreboardItem)
         setLoading(false);

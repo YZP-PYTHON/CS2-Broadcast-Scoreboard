@@ -71,6 +71,10 @@
       "draw": "#ffffff" // Color of draw
     },
     "autoEnable": true,  // Automatically display the scoreboard. When enabled, the scoreboard will be shown at the end of each round, during pauses, and before each round begins.
+    "showGameState": true, // Show or hide the game state timer
+    "showTeamScore": true, // Show or hide the team score
+    "showDataSheet": true, // Show or hide the player statistics table
+    "showBackground": true, // Show or hide the blurred background
     "scoreboardItem": [  // Player data display settings for the scoreboard. See below for details.
     {
         "key": "kills",
@@ -137,6 +141,17 @@
   - `autoEnable` Automatically display the scoreboard. When enabled, the scoreboard will be shown at the end of each round, during pauses, and before each round begins.
 
   - `scoreboardItem` [Details](#Detailed Scoreboard Configuration)
+
+  - `showGameState` Show or hide the game state timer
+
+  - `showTeamScore` Show or hide the team score
+
+  - `showDataSheet` Show or hide the player statistics table
+  
+  - `showBackground` Show or hide the blurred background
+
+  - example:
+    - `http://127.0.0.1:3000/?autoEnable=true&showGameState=true&showDataSheet=true&showTeamScore=true&showBackground=true`
 
 ---
 
