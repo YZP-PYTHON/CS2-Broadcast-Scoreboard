@@ -6,6 +6,10 @@
       "draw": "#ffffff"
     },
     "autoEnable": true,
+    "showGameState": true,
+    "showTeamScore": true,
+    "showDataSheet": true,
+    "showBackground": true,
     "scoreboardItem": [
     {
         "key": "kills",
