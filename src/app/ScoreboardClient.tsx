@@ -38,6 +38,7 @@ export default function Home() {
     T : "#ffffff"
   })
   
+  
   const [timeColor, setTimeColor] = useState("#ffffff")
 
   const [scoreboard,setScoreboard] = useState([null,null]);
@@ -52,6 +53,10 @@ export default function Home() {
       "draw": "#ffffff"
     },
     "autoEnable": true,
+    "showGameState": true,
+    "showTeamScore": true,
+    "showDataSheet": true,
+    "showBackground": true,
     "scoreboardItem": [
       {
         "key": "kills",
@@ -99,6 +104,19 @@ export default function Home() {
             cfg.scoreboardItem = JSON.parse(
                 searchParams.get("scoreboardItem")!
             );
+        }
+
+        if (searchParams.get("showGameState") !== null) {
+            cfg.showGameState = searchParams.get("showGameState") === "true";
+        }
+        if (searchParams.get("showTeamScore") !== null) {
+            cfg.showTeamScore = searchParams.get("showTeamScore") === "true";
+        }
+        if (searchParams.get("showDataSheet") !== null) {
+            cfg.showDataSheet = searchParams.get("showDataSheet") === "true";
+        }
+        if (searchParams.get("showBackground") !== null) {
+            cfg.showBackground = searchParams.get("showBackground") === "true";
         }
 
         setConfig(cfg);
@@ -306,59 +324,72 @@ export default function Home() {
 
   return (
     <div className="relative w-full h-full">
+      <div className={`${showScorebord ? "scoreboard-show" : "scoreboard-hide"}`}>
 
-    <div className={`${showScorebord ? "scoreboard-show" : "scoreboard-hide"}`}>
-      <div className="absolute inset-0 bg-black blur-3xl z-1 opacity-[0.90]">
+      {config.showBackground && (
         
-      </div>
+          <div className="absolute inset-0 bg-black blur-3xl z-1 opacity-[0.90]">
+            
+          </div>
+
+      )}
+      
 
       {/* 内容层 */}
       <div className={`relative z-10 flex-col items-center justify-center mt-[63px] h-screen `}>
-        <div style={{color:timeColor}} className={`text-[123px] [text-shadow:0_2px_10px_rgba(0,0,0,0.8)]
-         flex fixed top-[73px] left-1/2 -translate-x-1/2 leading-none 
-         ${isBlink ? "animate-[blink_1000ms_steps(1)_infinite]" : ""} ${showScorebord?"timmer-text-show":"timmer-text-hide"}`}>
-          
-          <span style={{color:timeColor}} className={`${isBlink
-              ? "animate-[blink_1000ms_steps(1)_infinite]"
-              : ""}
-            `}
-          >
-            {time}
-          </span>
-          
-        </div>
-        <div className={`relative w-screen h-[390px] ${showScorebord?"score-text-show":"score-text-hide"}`}>
-
-          {/* 左队 */}
-          <div className="absolute left-[200px] top-1/2 -translate-y-1/2 text-[96px] text-white">
-            {team1}
+        {config.showGameState &&(
+          <div style={{color:timeColor}} className={`text-[123px] [text-shadow:0_2px_10px_rgba(0,0,0,0.8)]
+          flex fixed top-[73px] left-1/2 -translate-x-1/2 leading-none 
+          ${isBlink ? "animate-[blink_1000ms_steps(1)_infinite]" : ""} ${showScorebord?"timmer-text-show":"timmer-text-hide"}`}>
+            
+            <span style={{color:timeColor}} className={`${isBlink
+                ? "animate-[blink_1000ms_steps(1)_infinite]"
+                : ""}
+              `}
+            >
+              {time}
+            </span>
           </div>
+        )}
+        {config.showTeamScore &&(
+          <div className={`relative w-screen h-[390px] ${showScorebord?"score-text-show":"score-text-hide"}`}>
 
-          {/* 比分 */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <div className="flex items-center text-[103px] text-white gap-5">
-              <div style={{color: scoreColorNow.CT}}>{score[0]}</div>
-              <div>:</div>
-              <div style={{color: scoreColorNow.T}}>{score[1]}</div>
+            {/* 左队 */}
+            <div className="absolute left-[200px] top-1/2 -translate-y-1/2 text-[96px] text-white">
+              {team1}
+            </div>
+
+            {/* 比分 */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div className="flex items-center text-[103px] text-white gap-5">
+                <div style={{color: scoreColorNow.CT}}>{score[0]}</div>
+                <div>:</div>
+                <div style={{color: scoreColorNow.T}}>{score[1]}</div>
+              </div>
+            </div>
+
+            {/* 右队 */}
+            <div className="absolute right-[200px] top-1/2 -translate-y-1/2 text-[96px] text-white">
+              {team2}
+            </div>
+
+          </div>
+        )}
+        
+        {config.showDataSheet &&(
+          <div >
+            <div className={` absolute left-[119px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
+              <Scoreboard players = {scoreboard[0]} data = {scoreboardConfig} color={"from-blue-600 to-blue-400"} animate={showScorebord} />
+            </div>
+            <div className={`absolute right-[120px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
+              <Scoreboard players= {scoreboard[1]} data={scoreboardConfig} color={"bg-gradient-to-r from-red-600 to-red-400"} animate={showScorebord}/>
             </div>
           </div>
 
-          {/* 右队 */}
-          <div className="absolute right-[200px] top-1/2 -translate-y-1/2 text-[96px] text-white">
-            {team2}
-          </div>
-
-        </div>
-        <div >
-          <div className={` absolute left-[119px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
-            <Scoreboard players = {scoreboard[0]} data = {scoreboardConfig} color={"from-blue-600 to-blue-400"} animate={showScorebord} />
-          </div>
-          <div className={`absolute right-[120px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
-            <Scoreboard players= {scoreboard[1]} data={scoreboardConfig} color={"bg-gradient-to-r from-red-600 to-red-400"} animate={showScorebord}/>
-          </div>
+        )}
+        
         </div>
       </div>
-    </div>
   </div>
     
     

@@ -34,6 +34,10 @@ export interface Config {
     };
 
     autoEnable: boolean;
+    showGameState: boolean;
+    showTeamScore: boolean;
+    showDataSheet: boolean;
+    showBackground: boolean;
 
     scoreboardItem: {
         key: string;
