@@ -78,6 +78,9 @@ export default function Home() {
         "name": "ADR",
         "fix": 1
       }
+    ],
+    "excludePlayer":[
+      ""
     ]
   });
 
@@ -379,10 +382,10 @@ export default function Home() {
         {config.showDataSheet &&(
           <div >
             <div className={` absolute left-[119px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
-              <Scoreboard players = {scoreboard[0]} data = {scoreboardConfig} color={"from-blue-600 to-blue-400"} animate={showScorebord} />
+              <Scoreboard players = {scoreboard[0]} data = {scoreboardConfig} color={"from-blue-600 to-blue-400"} animate={showScorebord} excludePlayer={config.excludePlayer}/>
             </div>
             <div className={`absolute right-[120px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
-              <Scoreboard players= {scoreboard[1]} data={scoreboardConfig} color={"bg-gradient-to-r from-red-600 to-red-400"} animate={showScorebord}/>
+              <Scoreboard players= {scoreboard[1]} data={scoreboardConfig} color={"bg-gradient-to-r from-red-600 to-red-400"} animate={showScorebord} excludePlayer={config.excludePlayer}/>
             </div>
           </div>
 

@@ -44,5 +44,7 @@ export interface Config {
         name: string;
         fix: number;
     }[];
+
+    excludePlayer:string[];
 }
 

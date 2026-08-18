@@ -1,4 +1,10 @@
-export function Scoreboard({players,data,color,animate}){
+export function Scoreboard({players,data,color,animate,excludePlayer}){
+
+    const visiblePlayers = players?.filter(
+        player => !excludePlayer.includes(player.steamId)
+    );
+
+
 
     return(
         <div className={`
@@ -29,7 +35,7 @@ export function Scoreboard({players,data,color,animate}){
                 <tbody className="bg-gradient-to-r from-white/5 to-transparent ">
                     
                         
-                    {players?.map((player) => (
+                    {visiblePlayers?.map((player) => (
                         <tr
                             key={player.steamId}
                             className={`relative
