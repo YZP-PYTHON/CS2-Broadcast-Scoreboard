@@ -96,6 +96,9 @@
         "name": "ADR",
         "fix": 1
     }
+  ],
+  "excludePlayer":[
+        ""  // config for excluded players, you can set coach or the player you dont want to see
   ]
 }
 ```
