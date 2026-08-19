@@ -24,37 +24,26 @@ const teams = {
 let initialized = false;
 
 
-function syncTeamSides(
-    map:any
-){
+function syncTeamSides(map: any) {
 
-    if(!teams.team1 || !teams.team2)
+    if (!teams.team1 || !teams.team2)
         return;
 
+    const ctName = map.team_ct?.name;
 
-    const ctName = map.team_ct.name;
-    const tName = map.team_t.name;
+    if (!ctName)
+        return;
 
+    if (ctName === teams.team1.gsiName) {
 
-    if(
-        ctName === teams.team1.gsiName &&
-        tName === teams.team2.gsiName
-    ){
         teams.team1.side = "CT";
         teams.team2.side = "T";
-        return;
-    }
 
+    } else if (ctName === teams.team2.gsiName) {
 
-    if(
-        ctName === teams.team2.gsiName &&
-        tName === teams.team1.gsiName
-    ){
-        teams.team2.side = "CT";
         teams.team1.side = "T";
-        return;
+        teams.team2.side = "CT";
     }
-
 }
 
 

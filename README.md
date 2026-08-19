@@ -99,7 +99,8 @@
   ],
   "excludePlayer":[
         ""  // config for excluded players, you can set coach or the player you dont want to see
-  ]
+  ],
+  "scoreboardSortBy": "adr" // Scoreboard sorting key. The value definition is the same as the item's "fix" field. Sorted from highest to lowest.
 }
 ```
 ### Detailed Scoreboard Configuration

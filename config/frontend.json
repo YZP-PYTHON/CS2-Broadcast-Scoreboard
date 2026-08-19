@@ -34,5 +34,6 @@
     ],
     "excludePlayer":[
         ""
-    ]
+    ],
+    "scoreboardSortBy": "adr"
 }

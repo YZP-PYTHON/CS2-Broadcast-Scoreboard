@@ -46,5 +46,6 @@ export interface Config {
     }[];
 
     excludePlayer:string[];
+    scoreboardSortBy: string;
 }
 
