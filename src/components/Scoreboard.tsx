@@ -1,10 +1,18 @@
-export function Scoreboard({players,data,color,animate,excludePlayer}){
+export function Scoreboard({players,data,color,animate,excludePlayer,sortBy}){
 
     const visiblePlayers = players?.filter(
         player => !excludePlayer.includes(player.steamId)
     );
 
+    const sortKey: keyof typeof players[number] = sortBy || "kills";
 
+    const players1 = Array.isArray(visiblePlayers)
+    ? visiblePlayers
+    : [];
+
+    const sortedPlayers = [...players1].sort((a, b) => {
+        return (b[sortKey] as number) - (a[sortKey] as number);
+    });
 
     return(
         <div className={`
@@ -35,7 +43,7 @@ export function Scoreboard({players,data,color,animate,excludePlayer}){
                 <tbody className="bg-gradient-to-r from-white/5 to-transparent ">
                     
                         
-                    {visiblePlayers?.map((player) => (
+                    {sortedPlayers?.map((player) => (
                         <tr
                             key={player.steamId}
                             className={`relative

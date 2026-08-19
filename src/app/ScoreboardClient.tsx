@@ -81,7 +81,8 @@ export default function Home() {
     ],
     "excludePlayer":[
       ""
-    ]
+    ],
+    "scoreboardSortBy": "kills"
   });
 
   const [loading, setLoading] = useState(true);
@@ -382,10 +383,11 @@ export default function Home() {
         {config.showDataSheet &&(
           <div >
             <div className={` absolute left-[119px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
-              <Scoreboard players = {scoreboard[0]} data = {scoreboardConfig} color={"from-blue-600 to-blue-400"} animate={showScorebord} excludePlayer={config.excludePlayer}/>
+              <Scoreboard 
+              players = {scoreboard[0]} data = {scoreboardConfig} color={"from-blue-600 to-blue-400"} animate={showScorebord} excludePlayer={config.excludePlayer} sortBy={config.scoreboardSortBy}/>
             </div>
             <div className={`absolute right-[120px] top-[285px] ${showScorebord ? "" : "table-hide" } `}>
-              <Scoreboard players= {scoreboard[1]} data={scoreboardConfig} color={"bg-gradient-to-r from-red-600 to-red-400"} animate={showScorebord} excludePlayer={config.excludePlayer}/>
+              <Scoreboard players= {scoreboard[1]} data={scoreboardConfig} color={"bg-gradient-to-r from-red-600 to-red-400"} animate={showScorebord} excludePlayer={config.excludePlayer} sortBy={config.scoreboardSortBy}/>
             </div>
           </div>
 
