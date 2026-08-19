@@ -95,7 +95,8 @@
   ],
   "excludePlayer":[
         ""  // 配置排除的玩家，教练或数据异常玩家可在此配置
-  ]
+  ],
+  "scoreboardSortBy": "adr" // 记分板排序键。值定义与item中的"fix"相同，按从大到小排序。
 
 }
 ```
