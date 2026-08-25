@@ -61,8 +61,8 @@ export function Scoreboard({players,data,color,animate,excludePlayer,sortBy}){
                             `}
                             style={{
                                 animationDelay: animate
-                                ? `${players.indexOf(player) * 300}ms`
-                                : `${(players.length - players.indexOf(player)) * 50}ms`
+                                ? `${sortedPlayers.indexOf(player) * 300}ms`
+                                : `${(sortedPlayers.length - sortedPlayers.indexOf(player)) * 50}ms`
                             }}
                         >
                             
