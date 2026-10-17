@@ -82,7 +82,7 @@ export async function POST(
 
     if (phase_countdowns.phase === "over" && phase_countdowns.phase_ends_in <= 1) {
 
-        const stats = updateRoundDamage(
+        const stats = await updateRoundDamage(
             body.map.round,
             player_data
         );
@@ -91,11 +91,11 @@ export async function POST(
 
     }
 
-
+    const damageStats = await getDamageStats();
 
     const scoreboard = buildScoreboard(
         player_data,
-        getDamageStats(),
+        damageStats,
         body.map.round
     );
 
