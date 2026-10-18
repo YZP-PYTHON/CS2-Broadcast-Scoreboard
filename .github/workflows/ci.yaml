@@ -196,7 +196,7 @@ jobs:
   # =========================
 
 
-   release:
+  release:
     needs:
       - version
       - build
@@ -276,7 +276,7 @@ jobs:
             exit 1
           fi
 
-          git tag "${TAG}" "${GITHUB_SHA}"
+          git tag "${TAG}"
           git push origin "${TAG}"
 
       # 发布 Release，并使用模板生成的正文
