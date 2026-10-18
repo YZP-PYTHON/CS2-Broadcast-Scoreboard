@@ -171,7 +171,7 @@ export default function Home() {
 
         if (data === null){
           console.log("MatchState data is null")
-          //return;
+          return;
           
         }
 
@@ -282,8 +282,7 @@ export default function Home() {
 
         console.error("API error:", err);
 
-      } 
-      
+      }
       if (running) {
             setTimeout(update, 500);
       }
