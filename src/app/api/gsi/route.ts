@@ -58,19 +58,19 @@ export async function POST(
     // console.log("matchStats", getMatchState());
 
 
-    initTeamMapping(
+    await initTeamMapping(
         config,
         body.map
     );
 
 
-    updateTeamScore(
+    await updateTeamScore(
         body.map
     );
 
 
     const teams =
-        getTeams();
+        await getTeams();
 
     // console.log("teams", teams);
 
@@ -82,7 +82,7 @@ export async function POST(
 
     if (phase_countdowns.phase === "over" && phase_countdowns.phase_ends_in <= 1) {
 
-        const stats = updateRoundDamage(
+        const stats = await updateRoundDamage(
             body.map.round,
             player_data
         );
@@ -91,19 +91,19 @@ export async function POST(
 
     }
 
+    const damageStats = await getDamageStats();
 
-
-    const scoreboard = buildScoreboard(
+    const scoreboard = await buildScoreboard(
         player_data,
-        getDamageStats(),
+        damageStats,
         body.map.round
     );
 
-    const gbt = groupByTeam(scoreboard);
+    const gbt = await groupByTeam(scoreboard);
 
     // console.log("scoreboard", scoreboard);
 
-    updateScoreboard(gbt);
+    await updateScoreboard(gbt);
 
     // console.log("scoreboard", getScoreboard());
 

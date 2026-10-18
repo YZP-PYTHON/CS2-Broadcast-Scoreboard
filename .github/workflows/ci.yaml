@@ -189,54 +189,103 @@ jobs:
 
           path:
             |
-              CS2Scoreboard-*
-
-
-
-
+              CS2Scoreboard-* 
 
   # =========================
   # 创建Release
   # =========================
 
 
-  release:
-
+   release:
     needs:
-
       - version
       - build
-
-    runs-on:
-
-      ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
 
-      - name: Create tag
+      # 生成 Release Markdown，替换模板变量
+      - name: Generate release notes
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          VERSION=${{ needs.version.outputs.version }}
-          git tag v${VERSION}
-          git push origin v${VERSION}
+          node <<'NODE'
+          const fs = require("node:fs");
+          const { execFileSync } = require("node:child_process");
 
+          const sha = process.env.GITHUB_SHA;
+
+          const git = (args) =>
+            execFileSync("git", args, {
+              encoding: "utf8",
+              env: process.env,
+            }).trim();
+
+          const values = {
+            VERSION: process.env.VERSION,
+            TAG: `v${process.env.VERSION}`,
+            COMMIT_SHA: sha,
+            COMMIT_SHORT_SHA: sha.slice(0, 7),
+            COMMIT_MESSAGE: git(["show", "-s", "--format=%s", sha]),
+            COMMIT_BODY:
+              git(["show", "-s", "--format=%b", sha]) || "无详细提交说明",
+            BRANCH: process.env.GITHUB_REF_NAME,
+            REPOSITORY: process.env.GITHUB_REPOSITORY,
+            AUTHOR: git(["show", "-s", "--format=%an", sha]),
+            BUILD_DATE: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"),
+          };
+
+          const templatePath = ".github/RELEASE_TEMPLATE.md";
+          const outputPath = "release-notes.md";
+
+          let content = fs.readFileSync(templatePath, "utf8");
+
+          content = content.replace(
+            /\{\{([A-Z_]+)\}\}/g,
+            (match, key) =>
+              Object.prototype.hasOwnProperty.call(values, key)
+                ? String(values[key] ?? "")
+                : match
+          );
+
+          fs.writeFileSync(outputPath, content, "utf8");
+          console.log(`Generated ${outputPath}`);
+          NODE
+
+      # 创建版本标签
+      - name: Create tag
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          TAG="v${VERSION}"
+
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists."
+            exit 1
+          fi
+
+          git tag "${TAG}" "${GITHUB_SHA}"
+          git push origin "${TAG}"
+
+      # 发布 Release，并使用模板生成的正文
       - name: Create GitHub Release
-
         uses: softprops/action-gh-release@v2
-
         with:
-          tag_name:
-            v${{ needs.version.outputs.version }}
-
-          name:
-            CS2Scoreboard v${{ needs.version.outputs.version }}
-          files:
-            |
-              artifacts/**/*.zip
-              artifacts/**/*.tar.gz
+          tag_name: v${{ needs.version.outputs.version }}
+          name: CS2Scoreboard v${{ needs.version.outputs.version }}
+          body_path: release-notes.md
+          files: |
+            artifacts/**/*.zip
+            artifacts/**/*.tar.gz
